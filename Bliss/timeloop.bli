@@ -1,0 +1,51 @@
+MODULE LIB =
+BEGIN
+FORWARD ROUTINE
+    RandomData,
+    IsLoop,
+    ScanRecursive;
+EXTERNAL ROUTINE Random;
+EXTERNAL ROUTINE SetArray;
+EXTERNAL ROUTINE GetArray;
+GLOBAL ROUTINE RandomData(data, data_length) =
+!+
+! This routine detects repetition in the passed array.
+!-
+    BEGIN
+    INCR I FROM 0 TO .data_length DO
+        SetArray(.data, .I, Random(10));
+    ;
+    END;
+GLOBAL ROUTINE IsLoop(data, data_length, series_length) =
+!+
+! This routine detects repetition in the passed array.
+!-
+    BEGIN
+    INCR I FROM 0 TO .data_length DO
+    INCR L FROM 0 TO .data_length DO
+        IF ScanRecursive(.data, .data_length, .I, .L, .series_length) EQL 1
+            THEN RETURN 1;
+    ;;
+    RETURN 0;
+    END;
+ROUTINE ScanRecursive(data, data_length, pattern_index, data_index, scan_length) =
+!+
+! This routine recursively compares two locations in the array.
+!-
+    BEGIN
+    IF .pattern_index GEQ .data_length OR .data_index GEQ .data_length
+        THEN RETURN 0;
+
+    IF .scan_length EQL 0
+        THEN RETURN 1;
+
+    IF .pattern_index EQL .data_index
+        THEN RETURN 0;
+
+    IF GetArray(.data, .pattern_index) EQL GetArray(.data, .data_index)
+        THEN
+            RETURN ScanRecursive(.data, .data_length, .pattern_index + 1, .data_index + 1, .scan_length - 1)
+        ELSE RETURN 0;
+    END;
+END
+ELUDOM
