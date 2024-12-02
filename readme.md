@@ -10,3 +10,12 @@
 
 ### Bliss
 > https://github.com/madisongh/blissc
+
+### Elixir
+> https://www.jdoodle.com/execute-elixir-online
+
+### Perl
+> https://onecompiler.com/perl
+
+### Lisp
+> https://www.sbcl.org/platform-table.html
